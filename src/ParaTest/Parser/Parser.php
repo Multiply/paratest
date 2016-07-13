@@ -62,10 +62,21 @@ class Parser
             ? null
             : new ParsedClass(
                 $this->refl->getDocComment(),
-                $this->refl->getName(),
+                $this->sanitizeReflectionName($this->refl->getName()),
                 $this->refl->getNamespaceName(),
                 $this->getMethods()
             );
+    }
+
+    /**
+     * Sanitize reflection name
+     *
+     * @param string $refName
+     * @return string
+     */
+    private function sanitizeReflectionName($refName)
+    {
+        return str_replace("\x00", '', $refName);
     }
 
     /**
